@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tensorflow Project</title>
+
+        <link rel="stylesheet" href="./styles.css">
+
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+        <script src="./lib/zlib.js"></script>
+        <script src="./lib/png.js"></script>
+        <script src="./lib/tf-v100.min.js"></script>
+        <script src="./lib/tfjs-vis-v102.min.js"></script>
+        
+        <script src="./board.js" type="module"></script>
+        <script src="./cnn.js" type="module"></script>
+    </head>
+
+    <body>
+        <h1 class="title">Guess the image!</h1>
+        <div class="toolbar">
+            <div class="colorpicker">
+                <span>Color: </span>
+                <input type="color" value="#000000"/>
+            </div>
+            <div>
+                <div class="eraseBtn">
+                    <button class="btn">Clear</button>
+                </div>
+                <div class="downloadBtn">
+                    <button class="btn">Download</button>
+                </div>
+            </div>
+        </div>
+        <canvas width="700" height="450"></canvas>
+        <div class="predictBtn">
+            <button class="btn">Predict</button>
+        </div>
+        <div class="modal">
+            <div class="modalContent">
+              <span class="modalClose">&times;</span>
+              <p>Hiscores</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+          </div>
+    </body>
+</html>
