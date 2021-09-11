@@ -208,7 +208,7 @@ function createModel() {
 function trainModel() {
 
     NNData.model.fit(tf.tensor(NNData.TrainQ), tf.tensor(NNData.TrainA), {
-        batchSize: 2,
+        batchSize: 32,
         epochs: 10,
         shuffle: true,
         verbose: 1,

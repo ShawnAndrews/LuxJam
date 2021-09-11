@@ -6,11 +6,15 @@ const NN = {
 		channels: -1
 	},
 	numlabels: -1,
-	labels: ['Dominoes', 'Chains']
+	labels: ['Block of Dominoes', 'Sunlight hitting a solar panel']
 };
 
+const title = document.getElementsByClassName("title")[0];
 const modal = document.getElementsByClassName("modal")[0];
 const predictBtn = document.querySelector(".predictBtn>button");
+
+var predictionInput = Math.floor(Math.random() * NN.labels.length);
+var predictionOutput = 0.00;
 
 start();
 
@@ -72,10 +76,10 @@ function onPredict() {
 		if (predictionArr[x] > predictionArr[highestIndex])
 			highestIndex = x;
 
-	console.log(`Prediction: ${highestIndex} with ${predictionArr[highestIndex] * 100}%`);
+	predictionOutput = predictionArr[predictionInput] * 100;
 
 	confetti({
-		particleCount: 100,
+		particleCount: 150,
 		spread: 120,
 		decay: 0.925,
 		ticks: 500,
@@ -88,7 +92,7 @@ function onPredict() {
 	});
 
 	confetti({
-		particleCount: 100,
+		particleCount: 150,
 		spread: 120,
 		decay: 0.925,
 		ticks: 500,
@@ -100,6 +104,8 @@ function onPredict() {
 		  }
 	});
 
+	showPredictionModalContent();
+
 }
 
 function showIntroScreenModalContent () {
@@ -109,7 +115,23 @@ function showIntroScreenModalContent () {
 	modal.style.display = "block";
 }
 
+function showPredictionModalContent () {
+	modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>Score: ${predictionOutput.toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><div class='modalPlayAgain btn'>Play Again</div></div>`;
+	document.querySelector('.modalPlayAgain').addEventListener('click', hideModal, false);
+	modal.style.display = "block";
+}
+
 function hideModal () {
 	modal.style.display = "none";
 	modal.style.background = 'rgba(0, 0, 0, 0.2)';
+	predictionInput = Math.floor(Math.random() * NN.labels.length);
+	title.innerHTML = `Draw an image of <u>${NN.labels[predictionInput]}</u>!`;
+	clearBoard();
+}
+
+function clearBoard() {
+	const canvas = document.querySelector('canvas');
+	const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 9999, 9999);
 }

@@ -107,6 +107,14 @@ canvas {
     width: calc(100% - 24px);
 }
 
+.modalPlayAgain {
+    text-align: center;
+    line-height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    width: calc(100% - 24px);
+}
+
 /* Loading bar */
 
 .loaderWrapper {
