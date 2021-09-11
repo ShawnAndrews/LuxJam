@@ -116,16 +116,38 @@ function createModel() {
     NNData.model.add(tf.layers.conv2d({
         inputShape: [NNData.image.width, NNData.image.height, NNData.image.channels],
         kernelSize: 3,
-        filters: 64,
+        filters: 32,
         activation: 'relu',
-        kernelInitializer: 'varianceScaling'
+        kernelInitializer: 'varianceScaling',
+        padding: 'same'
+    }));
+
+    NNData.model.add(tf.layers.conv2d({
+        kernelSize: 3,
+        filters: 32,
+        activation: 'relu',
+        kernelInitializer: 'varianceScaling',
+        padding: 'same'
+    }));
+
+    NNData.model.add(tf.layers.maxPooling2d({
+        poolSize: [3, 3], strides: [2, 2]
     }));
 
     NNData.model.add(tf.layers.conv2d({
         kernelSize: 3,
         filters: 64,
         activation: 'relu',
-        kernelInitializer: 'varianceScaling'
+        kernelInitializer: 'varianceScaling',
+        padding: 'same'
+    }));
+
+    NNData.model.add(tf.layers.conv2d({
+        kernelSize: 3,
+        filters: 64,
+        activation: 'relu',
+        kernelInitializer: 'varianceScaling',
+        padding: 'same'
     }));
 
     NNData.model.add(tf.layers.maxPooling2d({
@@ -136,32 +158,16 @@ function createModel() {
         kernelSize: 3,
         filters: 128,
         activation: 'relu',
-        kernelInitializer: 'varianceScaling'
+        kernelInitializer: 'varianceScaling',
+        padding: 'same'
     }));
 
     NNData.model.add(tf.layers.conv2d({
         kernelSize: 3,
         filters: 128,
         activation: 'relu',
-        kernelInitializer: 'varianceScaling'
-    }));
-
-    NNData.model.add(tf.layers.maxPooling2d({
-        poolSize: [3, 3], strides: [2, 2]
-    }));
-
-    NNData.model.add(tf.layers.conv2d({
-        kernelSize: 3,
-        filters: 256,
-        activation: 'relu',
-        kernelInitializer: 'varianceScaling'
-    }));
-
-    NNData.model.add(tf.layers.conv2d({
-        kernelSize: 3,
-        filters: 256,
-        activation: 'relu',
-        kernelInitializer: 'varianceScaling'
+        kernelInitializer: 'varianceScaling',
+        padding: 'same'
     }));
 
     NNData.model.add(tf.layers.maxPooling2d({

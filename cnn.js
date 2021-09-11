@@ -5,14 +5,12 @@ const NN = {
 		height: -1,
 		channels: -1
 	},
-	labels: -1
+	numlabels: -1,
+	labels: ['Dominoes', 'Chains']
 };
 
 const modal = document.getElementsByClassName("modal")[0];
 const predictBtn = document.querySelector(".predictBtn>button");
-
-document.querySelector('.predictBtn>button').addEventListener('click', onPredict, false);
-document.querySelector('.modalClose').addEventListener('click', () => modal.style.display = "none", false);
 
 start();
 
@@ -21,10 +19,12 @@ async function start() {
 	NN.image.width = NN.model.inputs[0].shape[1];
 	NN.image.height = NN.model.inputs[0].shape[2];
 	NN.image.channels = NN.model.inputs[0].shape[3];
-	NN.labels = NN.model.outputs[0].shape.slice(NN.model.outputs[0].shape.indexOf(','));
-	// tfvis.show.modelSummary({name: 'Model Architecture'}, NN.model);
+	NN.numlabels = NN.model.outputs[0].shape.slice(NN.model.outputs[0].shape.indexOf(','));
+	//tfvis.show.modelSummary({name: 'Model Architecture'}, NN.model);
 	//tfvis.show.layer({ name: 'Layer Summary', tab: 'Model Inspection'}, NN.model.getLayer(undefined, 1));
-	console.log(`Successfully loaded pre-trained model with input dim '${NN.image.width},${NN.image.height},${NN.image.channels}' and '${NN.labels}' output labels!`);
+	console.log(`Successfully loaded pre-trained model with input dim '${NN.image.width},${NN.image.height},${NN.image.channels}' and '${NN.numlabels}' output labels!`);
+	document.querySelector('.predictBtn>button').addEventListener('click', onPredict, false);
+	showIntroScreenModalContent();
 }
 
 function getResizedCanvas (cnvs) {
@@ -75,7 +75,7 @@ function onPredict() {
 	console.log(`Prediction: ${highestIndex} with ${predictionArr[highestIndex] * 100}%`);
 
 	confetti({
-		particleCount: 300,
+		particleCount: 100,
 		spread: 120,
 		decay: 0.925,
 		ticks: 500,
@@ -88,7 +88,7 @@ function onPredict() {
 	});
 
 	confetti({
-		particleCount: 300,
+		particleCount: 100,
 		spread: 120,
 		decay: 0.925,
 		ticks: 500,
@@ -99,7 +99,17 @@ function onPredict() {
 			y: 0.5
 		  }
 	});
-	
-	modal.style.display = "block";
 
+}
+
+function showIntroScreenModalContent () {
+	document.getElementsByClassName("loader")[0].style.display = "none";
+	modal.innerHTML = "<div class='modalContent'><h1 class='modalTitle'><img src='images/jam.png' alt='Lux Jam' width='25' height='25'> Shawn's Azure Lux Jam entry! <img src='images/jam.png' alt='Lux Jam' width='25' height='25'></h1><p>In this game you'll be asked to draw an object related to the event theme, chain reactions, then press the Predict button to see how close your drawing is to the object! Also, if you're lucky and get a top score you'll be added to the hiscores for that object challenge, courtesy of Azure Playfab!</p><p>This game was possible by creating a pre-trained deep convolutional neural network seen in the <a href='images/cnn.png' target='_blank'>image</a> below:</p><br/><img src='images/cnn.png' alt='NN' width='100%'><div class='modalStart btn'>Start</div></div>";
+	document.querySelector('.modalStart').addEventListener('click', hideModal, false);
+	modal.style.display = "block";
+}
+
+function hideModal () {
+	modal.style.display = "none";
+	modal.style.background = 'rgba(0, 0, 0, 0.2)';
 }

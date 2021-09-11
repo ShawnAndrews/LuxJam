@@ -20,6 +20,20 @@
 
     <body>
         <h1 class="title">Guess the image!</h1>
+        <div class="area" >
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+        </div>
         <div class="toolbar">
             <div class="colorpicker">
                 <span>Color: </span>
@@ -39,10 +53,12 @@
             <button class="btn">Predict</button>
         </div>
         <div class="modal">
-            <div class="modalContent">
-              <span class="modalClose">&times;</span>
-              <p>Hiscores</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="loaderWrapper">
+                <h2>Loading Neural Network...</h2>
+                <div class="loader">
+                    <div class="loaderBar"></div>
+                </div>
             </div>
-          </div>
+        </div>
     </body>
 </html>
