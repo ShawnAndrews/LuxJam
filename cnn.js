@@ -6,7 +6,7 @@ const NN = {
 		channels: -1
 	},
 	numlabels: -1,
-	labels: ['Block of Dominoes', 'Sunlight hitting a solar panel']
+	labels: ['Block of Dominoes', 'Sunlight hitting a solar panel', 'Lightning striking a box of TNT']
 };
 
 const title = document.getElementsByClassName("title")[0];
@@ -110,7 +110,7 @@ function onPredict() {
 
 function showIntroScreenModalContent () {
 	document.getElementsByClassName("loader")[0].style.display = "none";
-	modal.innerHTML = "<div class='modalContent'><h1 class='modalTitle'><img src='images/jam.png' alt='Lux Jam' width='25' height='25'> Shawn's Azure Lux Jam entry! <img src='images/jam.png' alt='Lux Jam' width='25' height='25'></h1><p>In this game you'll be asked to draw an object related to the event theme, chain reactions, then press the Predict button to see how close your drawing is to the object! Also, if you're lucky and get a top score you'll be added to the hiscores for that object challenge, courtesy of Azure Playfab!</p><p>This game was possible by creating a pre-trained deep convolutional neural network seen in the <a href='images/cnn.png' target='_blank'>image</a> below:</p><br/><img src='images/cnn.png' alt='NN' width='100%'><div class='modalStart btn'>Start</div></div>";
+	modal.innerHTML = "<div class='modalContent'><h1 class='modalTitle'><img src='images/jam.png' alt='Lux Jam' width='25' height='25'> Shawn's Azure Lux Jam entry! <img src='images/jam.png' alt='Lux Jam' width='25' height='25'></h1><p>In this game you'll be asked to draw a picture related to the event theme, chain reactions, then press the Predict button to check the accuracy of your drawing! Also, if you're lucky and get a top score you'll be added to the hiscores for that picture challenge, courtesy of Azure Playfab!</p><p>This game was possible by creating a pre-trained deep convolutional neural network seen in the <a href='images/cnn.png' target='_blank'>image</a> below:</p><br/><img src='images/cnn.png' alt='NN' width='100%'><div class='modalStart btn'>Start</div></div>";
 	document.querySelector('.modalStart').addEventListener('click', hideModal, false);
 	modal.style.display = "block";
 }
@@ -124,9 +124,16 @@ function showPredictionModalContent () {
 function hideModal () {
 	modal.style.display = "none";
 	modal.style.background = 'rgba(0, 0, 0, 0.2)';
-	predictionInput = Math.floor(Math.random() * NN.labels.length);
+	chooseNewPrediction();
 	title.innerHTML = `Draw an image of <u>${NN.labels[predictionInput]}</u>!`;
 	clearBoard();
+}
+
+function chooseNewPrediction () {
+	predictionInput += 1;
+	if (predictionInput == NN.labels.length) {
+		predictionInput = 0;
+	}
 }
 
 function clearBoard() {
