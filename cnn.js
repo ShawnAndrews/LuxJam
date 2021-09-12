@@ -20,7 +20,7 @@ var predictionInput = Math.floor(Math.random() * NN.labels.length);
 start();
 
 async function start() {
-	NN.model = await tf.loadLayersModel('/network/model.json');
+	NN.model = await tf.loadLayersModel('network/model.json');
 	NN.image.width = NN.model.inputs[0].shape[1];
 	NN.image.height = NN.model.inputs[0].shape[2];
 	NN.image.channels = NN.model.inputs[0].shape[3];

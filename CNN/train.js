@@ -156,7 +156,7 @@ function createModel() {
 
     NNData.model.add(tf.layers.conv2d({
         kernelSize: 3,
-        filters: 128,
+        filters: 100,
         activation: 'relu',
         kernelInitializer: 'varianceScaling',
         padding: 'same'
@@ -164,7 +164,7 @@ function createModel() {
 
     NNData.model.add(tf.layers.conv2d({
         kernelSize: 3,
-        filters: 128,
+        filters: 100,
         activation: 'relu',
         kernelInitializer: 'varianceScaling',
         padding: 'same'
