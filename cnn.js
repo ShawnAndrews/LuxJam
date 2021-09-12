@@ -1,4 +1,4 @@
-import { pfRegister } from './playfab.js';
+import { pfGetSessionTicket, pfSubmitScore, pfGetLeaderboard } from './playfab.js';
 
 const NN = {
 	model: null,
@@ -16,7 +16,6 @@ const modal = document.getElementsByClassName("modal")[0];
 const predictBtn = document.querySelector(".predictBtn>button");
 
 var predictionInput = Math.floor(Math.random() * NN.labels.length);
-var predictionOutput = 0.00;
 
 start();
 
@@ -29,7 +28,7 @@ async function start() {
 	//tfvis.show.modelSummary({name: 'Model Architecture'}, NN.model);
 	//tfvis.show.layer({ name: 'Layer Summary', tab: 'Model Inspection'}, NN.model.getLayer(undefined, 1));
 	console.log(`Successfully loaded pre-trained model with input dim '${NN.image.width},${NN.image.height},${NN.image.channels}' and '${NN.numlabels}' output labels!`);
-	document.querySelector('.predictBtn>button').addEventListener('click', onPredict, false);
+	predictBtn.addEventListener('click', onPredict, false);
 	
 	showIntroScreenModalContent();
 }
@@ -48,6 +47,8 @@ function getResizedCanvas (cnvs) {
 
 function onPredict() {
 	const input = [];
+
+	predictBtn.disabled = true;
 
 	const getInputByPixels = pixels => {
         const retArr = [];
@@ -79,7 +80,7 @@ function onPredict() {
 		if (predictionArr[x] > predictionArr[highestIndex])
 			highestIndex = x;
 
-	predictionOutput = predictionArr[predictionInput] * 100;
+	const predictionOutput = Math.trunc(predictionArr[predictionInput] * 100 * 100);
 
 	confetti({
 		particleCount: 150,
@@ -107,7 +108,9 @@ function onPredict() {
 		  }
 	});
 
-	showPredictionModalContent();
+	showPredictionModalContent(predictionOutput);
+
+	predictBtn.disabled = false;
 
 }
 
@@ -118,11 +121,23 @@ function showIntroScreenModalContent () {
 	modal.style.display = "block";
 }
 
-function showPredictionModalContent () {
-	pfRegister();
-	modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>Score: ${predictionOutput.toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><table class='Title'><thead><tr><th colspan='5'>TITLE <sup>resets daily</sup></th></tr></thead><tbody><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr></tbody></table><div class='modalPlayAgain btn'>Play Again</div></div>`;
-	document.querySelector('.modalPlayAgain').addEventListener('click', hideModal, false);
-	modal.style.display = "block";
+function showPredictionModalContent (prediction) {
+	const leaderboard = (predictionInput == 0) ? 'Dominoes' : ((predictionInput == 1) ? 'Sunlight' : ((predictionInput == 2) ? 'Lightning' : 'ERROR'));
+
+	pfGetSessionTicket()
+		.then(session_ticket => {
+			return pfSubmitScore (session_ticket, prediction, leaderboard)
+				.then(() => {
+					return pfGetLeaderboard (session_ticket, leaderboard, 5);
+				});
+		})
+		.then((leaderboardEntries) => {
+			console.log(leaderboardEntries);
+
+			modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>You scored ${(prediction / 100).toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><table class='Title'><thead><tr><th colspan='5'>${leaderboard} Challenge <sup>resets daily</sup></th></tr></thead><tbody><tr><td>${leaderboardEntries.length > 0 ? 'Player #'.concat(leaderboardEntries[0].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 0 ? (leaderboardEntries[0].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr></tbody></table><div class='modalPlayAgain btn'>Play Again</div></div>`;
+			document.querySelector('.modalPlayAgain').addEventListener('click', hideModal, false);
+			modal.style.display = "block";
+		});
 }
 
 function hideModal () {

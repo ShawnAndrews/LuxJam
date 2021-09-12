@@ -71,6 +71,11 @@ canvas {
     font-size: 2em;
 }
 
+.predictBtn>button:disabled,
+.predictBtn>button[disabled] {
+    opacity: 0.6;
+}
+
 canvas {
     background: none;
 }

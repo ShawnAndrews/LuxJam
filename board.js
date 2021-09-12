@@ -23,6 +23,8 @@ function colorChange(event) {
 
 function downloadImage() {
 
+    let tCanvas = canvas;
+
     /* DEVELOPER MODE - USED TO CREATE TRAINING SIZE IMAGES (1/7th scale) */
     // var temp_cnvs = document.createElement('canvas');
     // var temp_cntx = temp_cnvs.getContext('2d');
@@ -31,11 +33,12 @@ function downloadImage() {
     // temp_cntx.fillStyle = 'white';
     // temp_cntx.fillRect(0, 0, 100, 64);
     // temp_cntx.drawImage(canvas, 0, 0, 700, 450, 0, 0, 100, 64);
+    // tCanvas = temp_cnvs;
     /***************************************************/
 
     let tempEle = document.createElement('a'), e;
     tempEle.download = "drawing.png";
-    tempEle.href = temp_cnvs.toDataURL("image/png;base64");
+    tempEle.href = tCanvas.toDataURL("image/png;base64");
     if (document.createEvent) {
         e = document.createEvent("MouseEvents");
         e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
