@@ -14,7 +14,8 @@ export function pfGetSessionTicket () {
         })
         .then(response => {
             const session_ticket = response.data.data.SessionTicket;
-            return session_ticket;
+            const player_id = response.data.data.PlayFabId;
+            return { session_ticket: session_ticket, player_id: player_id };
         })
         .catch(error => console.log(error));
 }

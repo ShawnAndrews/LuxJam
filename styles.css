@@ -105,6 +105,10 @@ canvas {
     transform: translate(-50%, 0%);
 }
 
+.modalContent > .msg {
+    text-align: center;
+}
+
 .modalTitle {
     text-align: center;
 }

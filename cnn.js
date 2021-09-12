@@ -123,20 +123,36 @@ function showIntroScreenModalContent () {
 
 function showPredictionModalContent (prediction) {
 	const leaderboard = (predictionInput == 0) ? 'Dominoes' : ((predictionInput == 1) ? 'Sunlight' : ((predictionInput == 2) ? 'Lightning' : 'ERROR'));
+	let player_id = '';
+	let session_ticket = '';
+
+	const isScoreOnLeaderboard = (leaderboardEntries) => {
+		for (let i = 0; i < leaderboardEntries.length; i++)
+			if (leaderboardEntries[i].StatValue == prediction)
+				return true;
+		return false;
+	}
 
 	pfGetSessionTicket()
-		.then(session_ticket => {
-			return pfSubmitScore (session_ticket, prediction, leaderboard)
-				.then(() => {
-					return pfGetLeaderboard (session_ticket, leaderboard, 5);
-				});
+		.then(data => {
+			player_id = data.player_id;
+			session_ticket = data.session_ticket;
+			return pfSubmitScore (data.session_ticket, prediction, leaderboard);
 		})
-		.then((leaderboardEntries) => {
-			console.log(leaderboardEntries);
-
-			modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>You scored ${(prediction / 100).toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><table class='Title'><thead><tr><th colspan='5'>${leaderboard} Challenge <sup>resets daily</sup></th></tr></thead><tbody><tr><td>${leaderboardEntries.length > 0 ? 'Player #'.concat(leaderboardEntries[0].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 0 ? (leaderboardEntries[0].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr></tbody></table><div class='modalPlayAgain btn'>Play Again</div></div>`;
-			document.querySelector('.modalPlayAgain').addEventListener('click', hideModal, false);
-			modal.style.display = "block";
+		.then(() => {
+			// allow time for PlayFab to update
+			setTimeout(() => {
+				pfGetLeaderboard (session_ticket, leaderboard, 5)
+					.then((leaderboardEntries) => {
+						console.log(leaderboardEntries);
+			
+						const onLeaderboard = isScoreOnLeaderboard(leaderboardEntries);
+			
+						modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>You scored ${(prediction / 100).toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><p class='msg'>${onLeaderboard ? `Congratulations player ${player_id}, either your new score made it on the leaderboard or your old score remains in the top 5!` : `Sorry player ${player_id}, your score was not high enough to make it on the leaderboard or your old score is already higher on the leaderboard. Please try again!`}</p><table class='Title'><thead><tr><th colspan='5'>${leaderboard} Challenge <sup>resets daily</sup></th></tr></thead><tbody><tr><td>${leaderboardEntries.length > 0 ? 'Player #'.concat(leaderboardEntries[0].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 0 ? (leaderboardEntries[0].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr><tr><td>${leaderboardEntries.length > 1 ? 'Player #'.concat(leaderboardEntries[1].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 1 ? (leaderboardEntries[1].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr><tr><td>${leaderboardEntries.length > 2 ? 'Player #'.concat(leaderboardEntries[2].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 2 ? (leaderboardEntries[2].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr><tr><td>${leaderboardEntries.length > 3 ? 'Player #'.concat(leaderboardEntries[3].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 3 ? (leaderboardEntries[3].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr><tr><td>${leaderboardEntries.length > 4 ? 'Player #'.concat(leaderboardEntries[4].PlayFabId) : ''}</td><td>${leaderboardEntries.length > 4 ? (leaderboardEntries[4].StatValue / 100).toFixed(2).concat('%') : ''}</td></tr></tbody></table><div class='modalPlayAgain btn'>Play Again</div></div>`;
+						document.querySelector('.modalPlayAgain').addEventListener('click', hideModal, false);
+						modal.style.display = "block";
+					});
+			}, 1000);
 		});
 }
 
