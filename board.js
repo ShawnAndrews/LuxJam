@@ -24,13 +24,13 @@ function colorChange(event) {
 function downloadImage() {
 
     /* DEVELOPER MODE - USED TO CREATE TRAINING SIZE IMAGES (1/7th scale) */
-    var temp_cnvs = document.createElement('canvas');
-    var temp_cntx = temp_cnvs.getContext('2d');
-    temp_cnvs.width = 100; 
-    temp_cnvs.height = 64;
-    temp_cntx.fillStyle = 'white';
-    temp_cntx.fillRect(0, 0, 100, 64);
-    temp_cntx.drawImage(canvas, 0, 0, 700, 450, 0, 0, 100, 64);
+    // var temp_cnvs = document.createElement('canvas');
+    // var temp_cntx = temp_cnvs.getContext('2d');
+    // temp_cnvs.width = 100; 
+    // temp_cnvs.height = 64;
+    // temp_cntx.fillStyle = 'white';
+    // temp_cntx.fillRect(0, 0, 100, 64);
+    // temp_cntx.drawImage(canvas, 0, 0, 700, 450, 0, 0, 100, 64);
     /***************************************************/
 
     let tempEle = document.createElement('a'), e;

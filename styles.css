@@ -29,8 +29,8 @@ canvas {
 }
 
 .toolbar {
+    display: none;
     position: relative;
-    display: flex;
     justify-content: space-between;
     width: 700px;
     background-color: #ffffff;
@@ -38,6 +38,10 @@ canvas {
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
+}
+
+.canvas {
+    display: none;
 }
 
 .downloadBtn, .eraseBtn {
@@ -57,6 +61,7 @@ canvas {
 }
 
 .predictBtn {
+    display: none;
     text-align: center;
 }
 
@@ -306,3 +311,56 @@ canvas {
     }
 
 }
+
+/* Table */
+
+table {
+    width: 100%;
+    margin: 15px 0;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 700;
+    border: 1px solid #333;
+    background-color: #fff;
+    text-align: center;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 80%;
+    margin: 25px auto;
+  }
+  table td,
+  table th {
+    padding: 0.5em;
+    height: 40px;
+    vertical-align: middle;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+  }
+  table td:last-child,
+  table th:last-child {
+    border-right: none;
+  }
+  table th {
+    background: #3d8c40;
+  }
+  table td {
+    background: #fff;
+  }
+  table thead {
+    background-color: #333;
+  }
+  table thead th {
+    color: #fff;
+    font-size: 2rem;
+  }
+  table sup {
+    letter-spacing: 0;
+    font-size: 12px;
+    font-weight: 100;  
+    }
+  table tbody tr:last-child td,
+  table tbody tr:last-child th {
+    border-bottom: none;
+  }

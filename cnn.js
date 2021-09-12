@@ -1,3 +1,5 @@
+import { pfRegister } from './playfab.js';
+
 const NN = {
 	model: null,
 	image: {
@@ -6,7 +8,7 @@ const NN = {
 		channels: -1
 	},
 	numlabels: -1,
-	labels: ['Block of Dominoes', 'Sunlight hitting a solar panel', 'Lightning striking a box of TNT']
+	labels: ['A block of Dominoes', 'Sunlight hitting a solar panel', 'Lightning striking a box of TNT']
 };
 
 const title = document.getElementsByClassName("title")[0];
@@ -28,6 +30,7 @@ async function start() {
 	//tfvis.show.layer({ name: 'Layer Summary', tab: 'Model Inspection'}, NN.model.getLayer(undefined, 1));
 	console.log(`Successfully loaded pre-trained model with input dim '${NN.image.width},${NN.image.height},${NN.image.channels}' and '${NN.numlabels}' output labels!`);
 	document.querySelector('.predictBtn>button').addEventListener('click', onPredict, false);
+	
 	showIntroScreenModalContent();
 }
 
@@ -116,7 +119,8 @@ function showIntroScreenModalContent () {
 }
 
 function showPredictionModalContent () {
-	modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>Score: ${predictionOutput.toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><div class='modalPlayAgain btn'>Play Again</div></div>`;
+	pfRegister();
+	modal.innerHTML = `<div class='modalContent'><h1 class='modalTitle'><img src='images/1.gif' alt='Robot' width='75' height='75'>Score: ${predictionOutput.toFixed(2)}% !<img src='images/2.gif' alt='Robot' width='75' height='75'></h1><table class='Title'><thead><tr><th colspan='5'>TITLE <sup>resets daily</sup></th></tr></thead><tbody><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr><tr><td>CONTENT1</td><td>CONTENT2</td></tr></tbody></table><div class='modalPlayAgain btn'>Play Again</div></div>`;
 	document.querySelector('.modalPlayAgain').addEventListener('click', hideModal, false);
 	modal.style.display = "block";
 }
@@ -127,6 +131,10 @@ function hideModal () {
 	chooseNewPrediction();
 	title.innerHTML = `Draw an image of <u>${NN.labels[predictionInput]}</u>!`;
 	clearBoard();
+
+	document.querySelector(".predictBtn").style.display = "block";
+	document.querySelector(".canvas").style.display = "block";
+	document.querySelector(".toolbar").style.display = "flex";
 }
 
 function chooseNewPrediction () {
